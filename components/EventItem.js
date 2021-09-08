@@ -1,13 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "@/styles/EventItem.module.css";
+import { API_URL } from "@/config/index";
 
 export default function EventItem({ evt }) {
   return (
     <div className={styles.event}>
       <div className={styles.img}>
         <Image
-          src={evt.image ? evt.image : "/images/event-default.png"}
+          src={
+            evt.image
+              ? `${API_URL}${evt.image.formats.thumbnail.url}`
+              : "/images/event-default.png"
+          }
           width={170}
           height={100}
         />

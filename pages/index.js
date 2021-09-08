@@ -1,16 +1,7 @@
-import Link from "next/Link";
+import Link from "next/link";
 import Layout from "@/components/Layout";
 import EventItem from "@/components/EventItem";
 import { API_URL } from "@/config/index";
-
-export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
-  return {
-    props: { events: events.slice(0, 3) },
-    revalidate: 1,
-  };
-}
 
 export default function Home({ events }) {
   return (
@@ -20,7 +11,6 @@ export default function Home({ events }) {
 
       {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
-        // <h3 key={evt.id}> {evt.name} </h3>
       ))}
 
       {events.length > 0 && (
@@ -30,4 +20,13 @@ export default function Home({ events }) {
       )}
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const res = await fetch(`${API_URL}/events?_sort=date:ASC&_limit=3`);
+  const events = await res.json();
+  return {
+    props: { events },
+    revalidate: 1,
+  };
 }
